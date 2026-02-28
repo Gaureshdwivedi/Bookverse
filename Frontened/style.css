@@ -1,0 +1,83 @@
+html { scroll-behavior: smooth; }
+body {
+  transition: background 0.4s ease, color 0.4s ease;
+}
+/* Header Layout */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 40px;
+  background: linear-gradient(90deg, #2c3e50 60%, #2980b9 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.header-left p {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(1px);
+}
+
+/* Night mode toggle button */
+.toggle-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #ddd;
+  transform: translateY(-1px);
+}
+
+/* Welcome text */
+#welcomeUser {
+  font-weight: 500;
+  color: #f1f1f1;
+}
+
+#welcomeUser a {
+  color: #ffd43b;
+  text-decoration: none;
+}
+
+#welcomeUser a:hover {
+  text-decoration: underline;
+}

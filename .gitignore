@@ -1,0 +1,10 @@
+# Ignore editor configurations
+.vscode/
+
+# Ignore zip archives
+*.zip
+*.tar
+*.gz
+
+# Ignore macOS metadata
+.DS_Store

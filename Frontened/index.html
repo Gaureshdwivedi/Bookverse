@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="https://emojis.wiki/emoji-pics/microsoft/books-microsoft.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookVerse - Virtual Library</title>
+  <style>
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark { background: #1e272e; color: #d2dae2; }
+
+    header {
+      background: linear-gradient(90deg, #2c3e50 60%, #2980b9 100%);
+      color: #fff;
+      padding: 30px 0 15px 0;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(44,62,80,0.15);
+    }
+    header h1 { font-size: 2.7rem; margin-bottom: 0.2em; letter-spacing: 2px; font-weight: bold; }
+    header p { font-size: 1.15rem; margin-top: 10px; letter-spacing: 1px; }
+
+    nav {
+      background: #34495e;
+      padding: 12px 0;
+      box-shadow: 0 2px 8px rgba(44,62,80,0.07);
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 18px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.08rem;
+      transition: color 0.2s;
+      letter-spacing: 1px;
+    }
+    nav a:hover { color: #ffd700; text-shadow: 0 2px 8px #2222; }
+
+    .toggle-btn {
+      background: #2980b9; color: #fff; border: none;
+      padding: 8px 18px; border-radius: 20px; font-size: 0.95rem;
+      font-weight: bold; cursor: pointer; transition: background 0.3s;
+      float: right; margin-right: 20px;
+    }
+    .toggle-btn:hover { background: #3498db; }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto 30px auto;
+      background: #fff;
+      padding: 40px 30px 30px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.13);
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark .container { background: #2f3640; color: #dcdde1; }
+
+    .search-bar { margin-bottom: 35px; text-align: center; }
+    .search-bar input {
+      width: 70%; max-width: 400px;
+      padding: 12px 18px; font-size: 1.1rem;
+      border: 1.5px solid #b2bec3; border-radius: 25px;
+      outline: none; transition: border 0.2s;
+      box-shadow: 0 2px 8px #b2bec344;
+    }
+    .search-bar input:focus { border: 1.5px solid #2980b9; }
+
+    /* Search Bar */
+.search-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#searchInput {
+  width: 60%;
+  padding: 10px 15px;
+  border: 2px solid #2980b9;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+    h2 {
+      color: #2c3e50; margin-top: 40px; margin-bottom: 18px;
+      font-size: 1.6rem; border-left: 6px solid #2980b9;
+      padding-left: 12px; letter-spacing: 1px;
+    }
+    body.dark h2 { color: #f5f6fa; border-left-color: #3498db; }
+
+    .books-section {
+      display: flex; flex-wrap: wrap; gap: 32px;
+      justify-content: flex-start; margin-bottom: 20px;
+    }
+    .book-card {
+      background: linear-gradient(120deg, #f8fafc 60%, #e9f0fb 100%);
+      border-radius: 16px; width: 220px;
+      padding: 18px 12px 20px 12px;
+      text-align: center;
+      box-shadow: 0 4px 18px rgba(44,62,80,0.10);
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .book-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 12px 32px rgba(44,62,80,0.18);
+    }
+    .book-card img {
+      width: 120px; height: 180px;
+      object-fit: cover; border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .book-title { font-size: 1.15rem; margin: 10px 0 5px; font-weight: 600; color: #222f3e; }
+    .book-author { color: #636e72; font-size: 1rem; margin-bottom: 10px; }
+
+    /* Contact Form */
+    form {
+      max-width: 400px; margin: auto;
+      background: #fff; padding: 20px; border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    body.dark form { background: #353b48; }
+    form input, form textarea {
+      width: 100%; padding: 10px; margin: 10px 0;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    form button {
+      background: #2980b9; color: white;
+      padding: 10px 15px; border: none;
+      border-radius: 5px; cursor: pointer;
+    }
+    form button:hover { background: #3498db; }
+
+    footer {
+      background: linear-gradient(90deg, #2c3e50 60%, #2980b9 100%);
+      color: #fff; text-align: center;
+      padding: 18px 0 12px 0; margin-top: 40px;
+      font-size: 1.08rem; letter-spacing: 1px;
+      border-radius: 0 0 18px 18px;
+    }
+
+    @media (max-width: 900px) {
+      .container { padding: 18px 4vw; }
+      .books-section { gap: 18px; }
+    }
+    @media (max-width: 700px) {
+      .books-section { flex-direction: column; align-items: center; }
+      .book-card { width: 90%; }
+      .container { padding: 10px 2vw; }
+    }
+    /* 🌙 Dark Mode Fix for Book Cards and Modal */
+body.dark .book-card {
+  background: #2f3640; /* darker background for book cards */
+  color: #f5f6fa;      /* light text */
+  border: 1px solid #718093;
+  box-shadow: 0 4px 18px rgba(255,255,255,0.08);
+}
+
+body.dark .book-title {
+  color: #f5f6fa;
+}
+
+body.dark .book-author {
+  color: #dcdde1;
+}
+
+/* Make modal dark-friendly too */
+body.dark .modal-content {
+  background: #353b48;
+  color: #f5f6fa;
+}
+
+/* 💬 Chatbot styles */
+#chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+#chatbot-toggle {
+  background: #2980b9;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#chatbot-box {
+  display: none;
+  flex-direction: column;
+  width: 300px;
+  height: 400px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+#chatbot-header {
+  background: linear-gradient(90deg, #2980b9, #6dd5fa);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+}
+
+#chatbot-messages {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+#chatbot-input-area {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+#chatbot-input {
+  flex-grow: 1;
+  border: none;
+  padding: 8px;
+}
+
+#chatbot-send {
+  background: #2980b9;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* Dark mode for chatbot */
+body.dark #chatbot-box {
+  background: #2f3640;
+  color: white;
+}
+body.dark #chatbot-header {
+  background: linear-gradient(90deg, #000000, #353b48);
+}
+body.dark #chatbot-messages {
+  background: #3b3b3b;
+}
+#typing {
+  color: gray;
+  font-style: italic;
+  margin: 4px 0;
+}
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="header-left">
+    <h1>📚 BookVerse</h1>
+    <p>Explore a universe of books online!</p>
+  </div>
+
+  <div class="header-right">
+    <span id="welcomeUser">Welcome, Guest! <a href="login.html">Login here</a></span>
+    <button class="logout-btn" id="logoutBtn" style="display:none;">Logout</button>
+    <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Night Mode</button>
+  </div>
+</header>
+
+  <nav>
+  <a href="#fiction">Fiction</a>
+  <a href="#nonfiction">Non-Fiction</a>
+  <a href="#science">Science</a>
+  <a href="#history">History</a>
+  <a href="#children">Children</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for books, authors, or genres...">
+    </div>
+
+    <!-- Fiction -->
+    <h2 id="fiction">Fiction</h2>
+    <div class="books-section">
+      <div class="book-card" data-title="The God of Small Things" data-author="Arundhati Roy" data-genre="Fiction">
+        <img src="Images/God Of Small Things.jpg" alt="The God of Small Things">
+        <div class="book-title">The God of Small Things</div>
+        <div class="book-author">by Arundhati Roy</div>
+      </div>
+      <div class="book-card" data-title="The White Tiger" data-author="Aravind Adiga" data-genre="Fiction">
+        <img src="Images/The White Tiger.jpg" alt="The White Tiger">
+        <div class="book-title">The White Tiger</div>
+        <div class="book-author">by Aravind Adiga</div>
+      </div>
+      <div class="book-card" data-title="Malgudi Days" data-author="R.K. Narayan" data-genre="Fiction">
+        <img src="Images/Malgudi Days.jpg" alt="Malgudi Days">
+        <div class="book-title">Malgudi Days</div>
+        <div class="book-author">by R.K. Narayan</div>
+      </div>
+      <div class="book-card" data-title="Midnight's Children" data-author="Salman Rushdie" data-genre="Fiction">
+        <img src="Images/Midnight's Children.jpg" alt="Midnight's Children">
+        <div class="book-title">Midnight's Children</div>
+        <div class="book-author">by Salman Rushdie</div>
+      </div>
+      <div class="book-card" data-title="The Great Indian Novel" data-author="Shashi Tharoor" data-genre="Fiction">
+        <img src="Images/Great Indian Novel.jpg" alt="The Great Indian Novel">
+        <div class="book-title">The Great Indian Novel</div>
+        <div class="book-author">by Shashi Tharoor</div>
+      </div>
+      <div class="book-card" data-title="The Namesake" data-author="Jhumpa Lahiri" data-genre="Fiction">
+        <img src="Images/The Namesake.jpg" alt="The Namesake">
+        <div class="book-title">The Namesake</div>
+        <div class="book-author">by Jhumpa Lahiri</div>
+      </div>
+      <div class="book-card" data-title="The Palace of Illusions" data-author="Chitra Banerjee Divakaruni" data-genre="Fiction">
+        <img src="Images/The Place of Illusions.jpg" alt="The Palace of Illusions">
+        <div class="book-title">The Palace of Illusions</div>
+        <div class="book-author">by Chitra Banerjee Divakaruni</div>
+      </div>
+      <div class="book-card" data-title="Swami and Friends" data-author="R.K. Narayan" data-genre="Fiction">
+        <img src="Images/Swami and Friends.jpg" alt="Swami and Friends">
+        <div class="book-title">Swami and Friends</div>
+        <div class="book-author">by R.K. Narayan</div>
+      </div>
+    </div>
+
+    <!-- Non-Fiction -->
+    <h2 id="nonfiction">Non-Fiction</h2>
+    <div class="books-section">
+      <div class="book-card" data-title="India After Gandhi" data-author="Ramachandra Guha" data-genre="Non-Fiction">
+        <img src="Images/India After Gandhi.jpg" alt="India After Gandhi">
+        <div class="book-title">India After Gandhi</div>
+        <div class="book-author">by Ramachandra Guha</div>
+      </div>
+      <div class="book-card" data-title="India Unbound" data-author="Gurcharan Das" data-genre="Non-Fiction">
+        <img src="Images/India Unbound.jpg" alt="India Unbound">
+        <div class="book-title">India Unbound</div>
+        <div class="book-author">by Gurcharan Das</div>
+      </div>
+      <div class="book-card" data-title="The Argumentative Indian" data-author="Amartya Sen" data-genre="Non-Fiction">
+        <img src="Images/Amartya Sen.jpg" alt="The Argumentative Indian">
+        <div class="book-title">The Argumentative Indian</div>
+        <div class="book-author">by Amartya Sen</div>
+      </div>
+      <div class="book-card" data-title="Caste Matters" data-author="Suraj Yengde" data-genre="Non-Fiction">
+        <img src="Images/Caste Matters.jpg" alt="Caste Matters">
+        <div class="book-title">Caste Matters</div>
+        <div class="book-author">by Suraj Yengde</div>
+      </div>
+      <div class="book-card" data-title="The Emperor of All Maladies" data-author="Siddhartha Mukherjee" data-genre="Non-Fiction">
+        <img src="Images/Emperor of all Maladies.jpg" alt="The Emperor of All Maladies">
+        <div class="book-title">The Emperor of All Maladies</div>
+        <div class="book-author">by Siddhartha Mukherjee</div>
+      </div>
+      <div class="book-card" data-title="Ants Among Elephants" data-author="Sujatha Gidla" data-genre="Non-Fiction">
+        <img src="Images/Ants Among Elephant.jpg" alt="Ants Among Elephants">
+        <div class="book-title">Ants Among Elephants</div>
+        <div class="book-author">by Sujatha Gidla</div>
+      </div>
+      <div class="book-card" data-title="Everybody Loves a Good Drought" data-author="P. Sainath" data-genre="Non-Fiction">
+        <img src="Images/Everybody loves a good drought.jpg" alt="Everybody Loves a Good Drought">
+        <div class="book-title">Everybody Loves a Good Drought</div>
+        <div class="book-author">by P. Sainath</div>
+      </div>
+      <div class="book-card" data-title="Why I Am a Hindu" data-author="Shashi Tharoor" data-genre="Non-Fiction">
+        <img src="Images/Why I am Hindu.jpg" alt="Why I Am a Hindu">
+        <div class="book-title">Why I Am a Hindu</div>
+        <div class="book-author">by Shashi Tharoor</div>
+      </div>
+    </div>
+
+    <!-- Science / Science & Technology -->
+    <h2 id="science">Science</h2>
+    <div class="books-section">
+      <div class="book-card" data-title="Quantum Nation: India's Leap Into the Future" data-author="L. Venkata Subramaniam" data-genre="Science">
+        <img src="Images/Quantum Nation.jpg" alt="Quantum Nation: India's Leap Into the Future">
+        <div class="book-title">Quantum Nation: India's Leap Into the Future</div>
+        <div class="book-author">by L. Venkata Subramaniam</div>
+      </div>
+    </div>
+
+    <!-- History -->
+    <h2 id="history">History</h2>
+    <div class="books-section">
+      <div class="book-card" data-title="India After Gandhi" data-author="Ramachandra Guha" data-genre="History">
+        <img src="Images/India After Gandhi.jpg" alt="India After Gandhi">
+        <div class="book-title">India After Gandhi</div>
+        <div class="book-author">by Ramachandra Guha</div>
+      </div>
+      <div class="book-card" data-title="The Discovery of India" data-author="Jawaharlal Nehru" data-genre="History">
+        <img src="Images/Jawaharlal Nehru.jpg" alt="The Discovery of India">
+        <div class="book-title">The Discovery of India</div>
+        <div class="book-author">by Jawaharlal Nehru</div>
+      </div>
+      <div class="book-card" data-title="An Era of Darkness" data-author="Shashi Tharoor" data-genre="History">
+        <img src="Images/An Era of Darkness.jpg" alt="An Era of Darkness">
+        <div class="book-title">An Era of Darkness</div>
+        <div class="book-author">by Shashi Tharoor</div>
+      </div>
+      <div class="book-card" data-title="Early India: From the Origins to AD 1300" data-author="Romila Thapar" data-genre="History">
+        <img src="Images/The Penguin History.jpg" alt="Early India">
+        <div class="book-title">Early India: From the Origins to AD 1300</div>
+        <div class="book-author">by Romila Thapar</div>
+      </div>
+      <div class="book-card" data-title="The Last Mughal" data-author="William Dalrymple" data-genre="History">
+        <img src="Images/Last Mughal.jpg" alt="The Last Mughal">
+        <div class="book-title">The Last Mughal</div>
+        <div class="book-author">by William Dalrymple</div>
+      </div>
+      <div class="book-card" data-title="Lords of the Deccan" data-author="Anirudh Kanisetti" data-genre="History">
+        <img src="Images/Lords of Deccan.jpg" alt="Lords of the Deccan">
+        <div class="book-title">Lords of the Deccan</div>
+        <div class="book-author">by Anirudh Kanisetti</div>
+      </div>
+      <div class="book-card" data-title="India’s Wars: A Military History" data-author="Arjun Subramaniam" data-genre="History">
+        <img src="Images/India's Wars.jpg" alt="India's Wars">
+        <div class="book-title">India’s Wars: A Military History</div>
+        <div class="book-author">by Arjun Subramaniam</div>
+      </div>
+      <div class="book-card" data-title="The Wonder That Was India" data-author="A.L. Basham" data-genre="History">
+        <img src="Images/Wonder that was India.jpg" alt="The Wonder That Was India">
+        <div class="book-title">The Wonder That Was India</div>
+        <div class="book-author">by A.L. Basham</div>
+      </div>
+    </div>
+
+    <!-- Children's Books -->
+    <h2 id="children">Children's Books</h2>
+    <div class="books-section">
+      <div class="book-card" data-title="Savi and the Memory Keeper" data-author="Bijal Vachharajani" data-genre="Children">
+        <img src="Images/sSavi and The Memory Keeper.jpg" alt="Savi and the Memory Keeper">
+        <div class="book-title">Savi and the Memory Keeper</div>
+        <div class="book-author">by Bijal Vachharajani</div>
+      </div>
+      <div class="book-card" data-title="The Bird with Golden Wings" data-author="Sudha Murthy" data-genre="Children">
+        <img src="Images/Bird with Golden WIngs.jpg" alt="The Bird with Golden Wings">
+        <div class="book-title">The Bird with Golden Wings</div>
+        <div class="book-author">by Sudha Murthy</div>
+      </div>
+      <div class="book-card" data-title="Malgudi Days" data-author="R.K. Narayan" data-genre="Children">
+        <img src="Images/Malgudi Days.jpg" alt="Malgudi Days">
+        <div class="book-title">Malgudi Days</div>
+        <div class="book-author">by R.K. Narayan</div>
+      </div>
+      <div class="book-card" data-title="The Blue Umbrella" data-author="Ruskin Bond" data-genre="Children">
+        <img src="Images/Blue Umberalla.jpg" alt="The Blue Umbrella">
+        <div class="book-title">The Blue Umbrella</div>
+        <div class="book-author">by Ruskin Bond</div>
+      </div>
+      <div class="book-card" data-title="Swami and Friends" data-author="R.K. Narayan" data-genre="Children">
+        <img src="Images/Swami and Friends.jpg" alt="Swami and Friends">
+        <div class="book-title">Swami and Friends</div>
+        <div class="book-author">by R.K. Narayan</div>
+      </div>
+      <div class="book-card" data-title="The Night Train at Deoli" data-author="Ruskin Bond" data-genre="Children">
+        <img src="Images/Night Train at Deoli.jpg" alt="The Night Train at Deoli">
+        <div class="book-title">The Night Train at Deoli</div>
+        <div class="book-author">by Ruskin Bond</div>
+      </div>
+      <div class="book-card" data-title="A Children's History of India" data-author="Subhadra Sen Gupta" data-genre="Children">
+        <img src="Images/Chindren's History.jpg" alt="A Children's History of India">
+        <div class="book-title">A Children's History of India</div>
+        <div class="book-author">by Subhadra Sen Gupta</div>
+      </div>
+      <div class="book-card" data-title="Children of the Hidden Land" data-author="Mandira Shah" data-genre="Children">
+        <img src="Images/Children of the Hidden Land.jpg" alt="Children of the Hidden Land">
+        <div class="book-title">Children of the Hidden Land</div>
+        <div class="book-author">by Mandira Shah</div>
+      </div>
+    </div>
+
+    <h2 id="about">About</h2>
+    <p>BookVerse is a demo project showcasing how a virtual library can work. It contains classic and modern books with dummy links for demonstration purposes. You can expand it by adding real e-books, previews, or integrating a backend database.</p>
+
+    <h2 id="contact">Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 BookVerse. All rights reserved.
+  </footer>
+
+  <footer>
+  <div class="footer-container">
+    <!-- About -->
+    <div class="footer-col">
+      <h3>📚 BookVerse</h3>
+      <p>Your virtual gateway to a universe of books. Explore, discover, and fall in love with reading again.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#fiction">Fiction</a></li>
+        <li><a href="#nonfiction">Non-Fiction</a></li>
+        <li><a href="#science">Science</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#children">Children</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-col">
+      <h3>Contact Us</h3>
+      <p>Email: <a href="mailto:bookverse@demo.com">bookverse@demo.com</a></p>
+      <p>Phone: +91-9453783211</p>
+      <p>Location: Virtual Library, Online 🌐</p>
+    </div>
+
+    <!-- Social Links -->
+    <div class="footer-col">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><img src="https://static.designboom.com/wp-content/uploads/2023/09/facebook-new-logo-change-designboom-02.jpg" alt="Facebook"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" alt="LinkedIn"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2025 BookVerse. All Rights Reserved. | Designed with ❤ for Readers</p>
+  </div>
+</footer>
+
+<style>
+  footer {
+    background: linear-gradient(90deg, #2c3e50 60%, #2980b9 100%);
+    color: #fff;
+    padding: 40px 20px 20px;
+    margin-top: 50px;
+    border-radius: 0 0 18px 18px;
+  }
+
+  .footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    padding-bottom: 20px;
+  }
+
+  .footer-col h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    border-left: 4px solid #ffd700;
+    padding-left: 10px;
+  }
+
+  .footer-col p {
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-col ul li {
+    margin: 8px 0;
+  }
+
+  .footer-col ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover {
+    color: #ffd700;
+  }
+
+  .social-icons {
+  display: flex;
+  justify-content: center; /* centers horizontally */
+  align-items: center;     /* centers vertically */
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icons a img {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.2s;
+}
+
+.social-icons a img:hover {
+  transform: scale(1.2);
+}
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.3);
+    text-align: center;
+    padding-top: 15px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+</style>
+
+  <!-- Modal -->
+<div id="bookModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalAuthor"></p>
+    <p id="modalGenre"></p>
+    <p><em>More details about the book can go here...</em></p>
+  </div>
+</div>
+
+<style>
+.modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  justify-content: center; align-items: center;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+}
+.close-btn {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+body.dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+body.dark a {
+  color: #ffd700; /* readable gold link color */
+}
+
+body.dark input, body.dark textarea {
+  background-color: #1e1e1e;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+/* 👋 Welcome message (for both guest & logged-in users) */
+#welcomeUser {
+  font-size: 1.1rem;
+  margin-top: 8px;
+  color: #f5f5f2; /* visible in light mode */
+  opacity: 0;
+  transform: translateY(5px);
+  animation: fadeIn 0.8s ease-out forwards;
+  transition: color 0.3s ease;
+}
+
+/* 🌐 Link styling */
+#welcomeUser a {
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+#welcomeUser a:hover {
+  text-decoration: underline;
+}
+
+/* 🌙 Dark mode */
+body.dark #welcomeUser {
+  color: #f5f6fa;
+}
+
+body.dark #welcomeUser a {
+  color: #74b9ff;
+}
+
+/* ✨ Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🌟 Subtle glow for logged-in username */
+.logged-in {
+  color: #16a085;
+  font-weight: 700;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+body.dark .logged-in {
+  color: #1abc9c;
+}
+
+/* Header Layout */
+header {
+  display: flex;
+  justify-content: center;  /* centers BookVerse */
+  align-items: center;
+  position: relative;
+  padding: 25px 40px;
+  background: linear-gradient(90deg, #2c3e50 60%, #2980b9 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+}
+
+/* Center Title */
+.header-left {
+  text-align: center;
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.header-left p {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  color: #f1f1f1;
+}
+
+/* Right-side Buttons */
+.header-right {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Logout button */
+.logout-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+.logout-btn:active {
+  transform: translateY(1px);
+}
+
+/* Night mode toggle button */
+.toggle-btn {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #ddd;
+  transform: translateY(-1px);
+}
+
+/* Welcome text */
+#welcomeUser {
+  font-weight: 500;
+  color: #f1f1f1;
+}
+
+#welcomeUser a {
+  color: #ffd43b;
+  text-decoration: none;
+}
+
+#welcomeUser a:hover {
+  text-decoration: underline;
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const welcomeText = document.getElementById("welcomeUser");
+
+  function updateWelcome() {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (user) {
+      welcomeText.innerHTML = `
+        Welcome, <span class="logged-in">${user.name}</span>!
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      `;
+      attachLogoutHandler();
+    } else {
+      welcomeText.innerHTML = `Hello, Guest! <a href="login.html">Login here</a>`;
+    }
+  }
+
+  function attachLogoutHandler() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("loggedInUser");
+        updateWelcome();
+        alert("You have been logged out!");
+      });
+    }
+  }
+
+  // 🌙 Apply saved theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    const btn = document.querySelector(".toggle-btn");
+    if (btn) btn.textContent = "☀ Light Mode";
+  }
+
+  updateWelcome();
+});
+
+// 🌙 Dark Mode Toggle
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+  const btn = document.querySelector(".toggle-btn");
+  const isDark = document.body.classList.contains("dark");
+  btn.textContent = isDark ? "☀ Light Mode" : "🌙 Night Mode";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+</script>
+
+<!-- 💬 Chatbot -->
+<div id="chatbot-container">
+  <button id="chatbot-toggle">💬</button>
+
+  <div id="chatbot-box" class="hidden">
+    <div id="chatbot-header">BookVerse Chatbot 🤖</div>
+    <div id="chatbot-messages"></div>
+    <div id="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Ask me anything..." />
+      <button id="chatbot-send">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ======== CHATBOT VARIABLES ========
+  const chatbotToggle = document.getElementById("chatbot-toggle");
+  const chatbotBox = document.getElementById("chatbot-box");
+  const chatbotSend = document.getElementById("chatbot-send");
+  const chatbotInput = document.getElementById("chatbot-input");
+  const chatbotMessages = document.getElementById("chatbot-messages");
+
+  // ======== SHOW CHATBOT BUTTON ALWAYS ========
+  if (chatbotToggle) chatbotToggle.style.display = "block";
+
+  // ======== LOAD PREVIOUS CHAT (Memory) ========
+  const savedChat = localStorage.getItem("chatHistory");
+  if (savedChat && chatbotMessages) chatbotMessages.innerHTML = savedChat;
+
+  // ======== TOGGLE CHATBOT ========
+  if (chatbotToggle) {
+    chatbotToggle.addEventListener("click", () => {
+      const isOpen = chatbotBox.style.display === "flex";
+      chatbotBox.style.display = isOpen ? "none" : "flex";
+
+      if (!isOpen && chatbotMessages.innerHTML.trim() === "") {
+        appendMessage("Bot", "Hi there 👋! I’m your BookVerse assistant. Ask me about books, genres, or how to login!");
+      }
+    });
+  }
+
+  // ======== SEND MESSAGE ========
+  if (chatbotSend && chatbotInput) {
+    chatbotSend.addEventListener("click", sendMessage);
+    chatbotInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  }
+
+  function sendMessage() {
+    const msg = chatbotInput.value.trim();
+    if (!msg) return;
+    appendMessage("You", msg);
+    chatbotInput.value = "";
+
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      const reply = getBotReply(msg);
+      appendMessage("Bot", reply);
+    }, 1000);
+  }
+
+  // ======== SMARTER BOT REPLIES ========
+  function getBotReply(msg) {
+    msg = msg.toLowerCase();
+
+    if (msg.includes("hello") || msg.includes("hi"))
+      return "Hello there! How can I assist you today?";
+
+    if (msg.includes("how are you"))
+      return "I'm just a bot, but I’m feeling bookish today! 📚";
+
+    if (msg.includes("bookverse"))
+      return "BookVerse is your digital library — explore, read, and enjoy!";
+
+    if (msg.includes("team") || msg.includes("developer"))
+      return "This project was developed by a team of 6 tech enthusiasts from CSE.";
+
+    if (msg.includes("login"))
+      return "You can log in using the Login link in the top menu.";
+
+    if (msg.includes("register"))
+      return "Click on Register to create your account and start your journey.";
+
+    if (msg.includes("logout"))
+      return "Click the Logout button to safely exit your session.";
+
+    if (msg.includes("dashboard"))
+      return "Your dashboard shows your profile and reading stats 📊.";
+
+    if (msg.includes("dark mode") || msg.includes("night"))
+      return "Toggle 🌙 Night Mode to switch between light and dark themes!";
+
+    if (msg.includes("suggest") || msg.includes("read"))
+      return "Try reading ‘Atomic Habits’, ‘Ikigai’, or ‘The Alchemist’ — all are amazing choices!";
+
+    if (msg.includes("fiction"))
+      return "Fiction books take you to new worlds — try ‘The God of Small Things’.";
+      
+    if (msg.includes("non-fiction"))
+      return "Non-fiction books are based on facts and real experiences.";
+
+    if (msg.includes("harry potter"))
+      return "Harry Potter is a magical fantasy series by J.K. Rowling. ⚡";
+
+    if (msg.includes("wings of fire"))
+      return "‘Wings of Fire’ by A.P.J. Abdul Kalam is truly inspiring! 🚀";
+
+    if (msg.includes("help"))
+      return "I can help you with login, registration, or book recommendations. What do you need help with?";
+
+    if (msg.includes("time")) {
+      const now = new Date().toLocaleTimeString();
+      return `It's currently ${now}. Perfect time to read something new! 📖`;
+    }
+
+    if (msg.includes("who are you"))
+      return "I’m BookVerse Bot 🤖 — your reading companion and guide!";
+
+    if (msg.includes("thank"))
+      return "You’re welcome! 😊 Happy to help.";
+
+    if (msg.includes("bye"))
+      return "Goodbye! Come back soon to explore more books. 📚";
+
+    return "Hmm, I’m not sure about that. Try asking about books, login, or features!";
+  }
+
+  // ======== APPEND MESSAGE FUNCTION ========
+  function appendMessage(sender, text) {
+    const div = document.createElement("div");
+    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    chatbotMessages.appendChild(div);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    localStorage.setItem("chatHistory", chatbotMessages.innerHTML);
+  }
+
+  // ======== TYPING ANIMATION ========
+  function showTyping() {
+    const typingDiv = document.createElement("div");
+    typingDiv.id = "typing";
+    typingDiv.innerHTML = "<em>Bot is typing...</em>";
+    chatbotMessages.appendChild(typingDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function hideTyping() {
+    const typingDiv = document.getElementById("typing");
+    if (typingDiv) typingDiv.remove();
+  }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (currentUser && currentUser.name) {
+  addMessage(`Hello ${currentUser.name}! 👋 How can I help you today?`, "bot");
+} else {
+  addMessage("Hello! 👋 How can I help you today?", "bot");
+}
+
+  // Function to update welcome text dynamically
+  function updateWelcome() {
+    const user = JSON.parse(localStorage.getItem("bookverseUser"));
+    if (user) {
+      welcomeText.innerHTML = `
+        Welcome, <span class="logged-in">${user.name}</span>!
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      `;
+      attachLogoutHandler(); // attach event after rendering button
+    } else {
+      welcomeText.innerHTML = `Hello, Guest! <a href="login.html">Login here</a>`;
+    }
+  }
+
+  // Function to attach logout handler
+  function attachLogoutHandler() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        // Remove user data
+        localStorage.removeItem("bookverseUser");
+
+        // Update text immediately
+        updateWelcome();
+
+        alert("You have been logged out!");
+      });
+    }
+  }
+
+  // Run on load
+  updateWelcome();
+
+  // Dark mode handler
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme === "dark") {
+    document.body.classList.add("dark");
+    const btn = document.querySelector(".toggle-btn");
+    if (btn) btn.textContent = "☀ Light Mode";
+  }
+});
+</script>
+
+<!-- Chatbot Box -->
+<div id="chatbot-box" class="chatbot-box">
+  <div id="chatbot-messages" class="chatbot-messages"></div>
+  <input id="chatbot-input" type="text" placeholder="Type your message..." />
+  <button id="chatbot-send">Send</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput");
+  const bookCards = document.querySelectorAll(".book-card");
+
+  searchInput.addEventListener("input", function () {
+    const searchValue = searchInput.value.toLowerCase();
+
+    bookCards.forEach(card => {
+      const title = card.dataset.title.toLowerCase();
+      const author = card.dataset.author.toLowerCase();
+      const genre = card.dataset.genre.toLowerCase();
+
+      // If ANY field contains the search text → show book
+      if (
+        title.includes(searchValue) ||
+        author.includes(searchValue) ||
+        genre.includes(searchValue)
+      ) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("bookModal");
+  const closeBtn = document.querySelector(".close-btn");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalAuthor = document.getElementById("modalAuthor");
+  const modalGenre = document.getElementById("modalGenre");
+
+  document.querySelectorAll(".book-card").forEach(card => {
+    card.addEventListener("click", () => {
+      modalTitle.textContent = card.dataset.title;
+      modalAuthor.textContent = "by " + card.dataset.author;
+      modalGenre.textContent = "Genre: " + card.dataset.genre;
+      modal.style.display = "flex";
+    });
+  });
+
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+});
+</script>

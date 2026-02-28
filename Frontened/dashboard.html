@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="https://emojis.wiki/emoji-pics/microsoft/books-microsoft.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard - BookVerse</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background: #1e272e;
+      color: #f5f6fa;
+    }
+
+    .dashboard-container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(44, 62, 80, 0.2);
+      text-align: center;
+      width: 380px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark .dashboard-container {
+      background: #2f3640;
+      color: #f5f6fa;
+    }
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #2980b9;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin: 10px 0;
+      font-size: 1.8rem;
+      color: #2c3e50;
+    }
+
+    body.dark h2 {
+      color: #f5f6fa;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    body.dark p {
+      color: #dcdde1;
+    }
+
+    button {
+      background: #2980b9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 5px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #3498db;
+      transform: translateY(-2px);
+    }
+
+    .toggle-btn {
+      background: none;
+      color: #2980b9;
+      text-decoration: underline;
+      border: none;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    body.dark .toggle-btn {
+      color: #74b9ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container" id="dashboard">
+    <h2>Loading...</h2>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      const container = document.getElementById("dashboard");
+
+      if (!user) {
+        alert("Please login first!");
+        window.location.href = "login.html";
+        return;
+      }
+
+      // 🧠 Generate random avatar
+      const avatarUrl = `https://api.dicebear.com/9.x/identicon/svg?seed=${encodeURIComponent(user.name)}`;
+
+      // 🎨 Dashboard Content
+      container.innerHTML = `
+        <img src="${avatarUrl}" alt="User Avatar" class="profile-pic">
+        <h2>Welcome, ${user.name} 👋</h2>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <button id="goHome">🏠 Go to Home Page</button>
+        <button id="logoutBtn">🚪 Logout</button>
+        <br>
+        <button class="toggle-btn" onclick="toggleDarkMode()">🌙 Toggle Dark Mode</button>
+      `;
+
+      // 🌙 Theme Handling
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") document.body.classList.add("dark");
+
+      // 🎯 Event Listeners
+      document.getElementById("goHome").addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("loggedInUser");
+        alert("Logged out successfully!");
+        window.location.href = "index.html";
+      });
+    });
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem(
+        "theme",
+        document.body.classList.contains("dark") ? "dark" : "light"
+      );
+    }
+  </script>
+</body>
+</html>
